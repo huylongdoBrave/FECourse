@@ -1,18 +1,29 @@
-export const PRICING_DATA = [
+export interface PricingPlan {
+  id: number
+  name: string
+  price: string
+  salePrice: string
+  descript: string[]
+}
+
+const pricingPlans: PricingPlan[] = [
   {
-    id: "basic",
+    id: 1,
+    name: "Gói Cơ Bản",
     price: "2.999.000đ",
     salePrice: "1.999.000đ",
     descript: ["Truy cập 3 tháng", "20+ giờ video", "3 dự án thực tế", "Hỗ trợ qua email"],
   },
   {
-    id: "standard",
+    id: 2,
+    name: "Gói Nâng Cao",
     price: "5.999.000đ",
     salePrice: "3.999.000đ",
     descript: ["Truy cập 6 tháng", "35+ giờ video", "5 dự án thực tế", "Hỗ trợ qua chat", "Tham gia cộng đồng"],
   },
   {
-    id: "pro",
+    id: 3,
+    name: "Gói Chuyên Sâu",
     price: "8.999.000đ",
     salePrice: "5.999.000đ",
     descript: [
@@ -25,7 +36,8 @@ export const PRICING_DATA = [
     ],
   },
   {
-    id: "expert",
+    id: 4,
+    name: "Gói Mentor",
     price: "12.999.000đ",
     salePrice: "8.999.000đ",
     descript: [
@@ -39,7 +51,8 @@ export const PRICING_DATA = [
     ],
   },
   {
-    id: "ultimate",
+    id: 5,
+    name: "Gói Toàn Diện",
     price: "19.999.000đ",
     salePrice: "14.999.000đ",
     descript: [
@@ -53,7 +66,8 @@ export const PRICING_DATA = [
     ],
   },
   {
-    id: "vip",
+    id: 6,
+    name: "Gói VIP",
     price: "29.999.000đ",
     salePrice: "19.999.000đ",
     descript: [
@@ -68,3 +82,7 @@ export const PRICING_DATA = [
     ],
   },
 ]
+
+export const getPricingData = () => pricingPlans
+
+export const getPlanById = (id: number) => pricingPlans.find((plan) => plan.id === id)

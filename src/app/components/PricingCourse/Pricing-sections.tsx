@@ -1,93 +1,94 @@
 "use client"
 import { useRouter } from "next/navigation"
 import { Check } from "lucide-react"
+import { getPricingData, PricingPlan } from "./data"
 
-interface PricingPlan {
-  price: string
-  salePrice: string
-  descript: string[]
-}
+// interface PricingPlan {
+//   price: string
+//   salePrice: string
+//   descript: string[]
+// }
 
-function getMockPricingData(): PricingPlan[] {
-  return [
-    {
-      price: "2.999.000đ",
-      salePrice: "1.999.000đ",
-      descript: ["Truy cập 3 tháng", "20+ giờ video", "3 dự án thực tế", "Hỗ trợ qua email"],
-    },
-    {
-      price: "5.999.000đ",
-      salePrice: "3.999.000đ",
-      descript: ["Truy cập 6 tháng", "35+ giờ video", "5 dự án thực tế", "Hỗ trợ qua chat", "Tham gia cộng đồng"],
-    },
-    {
-      price: "8.999.000đ",
-      salePrice: "5.999.000đ",
-      descript: [
-        "Truy cập trọn đời",
-        "50+ giờ video chất lượng cao",
-        "10+ dự án thực tế",
-        "Hỗ trợ 1-1 từ mentor",
-        "Tham gia cộng đồng học viên",
-        "Chứng chỉ hoàn thành",
-      ],
-    },
-    {
-      price: "12.999.000đ",
-      salePrice: "8.999.000đ",
-      descript: [
-        "Truy cập trọn đời",
-        "70+ giờ video",
-        "15 dự án thực tế",
-        "Mentor 1-1 hàng tuần",
-        "Review code chi tiết",
-        "Chứng chỉ + Portfolio",
-        "Hỗ trợ tìm việc",
-      ],
-    },
-    {
-      price: "19.999.000đ",
-      salePrice: "14.999.000đ",
-      descript: [
-        "Truy cập trọn đời tất cả khóa",
-        "100+ giờ video",
-        "20+ dự án thực chiến",
-        "Mentor chuyên gia 1-1",
-        "Mock interview",
-        "Đảm bảo việc làm",
-        "Mạng lưới doanh nghiệp",
-      ],
-    },
-    {
-      price: "29.999.000đ",
-      salePrice: "19.999.000đ",
-      descript: [
-        "Gói VIP - Truy cập trọn đời",
-        "150+ giờ video premium",
-        "30+ dự án thực tế lớn",
-        "Mentor CTO/Tech Lead",
-        "Thực tập có lương",
-        "Đảm bảo việc làm lương cao",
-        "Hỗ trợ suốt đời",
-        "Networking events",
-      ],
-    },
-  ]
-}
+// function getMockPricingData(): PricingPlan[] {
+//   return [
+//     {
+//       price: "2.999.000đ",
+//       salePrice: "1.999.000đ",
+//       descript: ["Truy cập 3 tháng", "20+ giờ video", "3 dự án thực tế", "Hỗ trợ qua email"],
+//     },
+//     {
+//       price: "5.999.000đ",
+//       salePrice: "3.999.000đ",
+//       descript: ["Truy cập 6 tháng", "35+ giờ video", "5 dự án thực tế", "Hỗ trợ qua chat", "Tham gia cộng đồng"],
+//     },
+//     {
+//       price: "8.999.000đ",
+//       salePrice: "5.999.000đ",
+//       descript: [
+//         "Truy cập trọn đời",
+//         "50+ giờ video chất lượng cao",
+//         "10+ dự án thực tế",
+//         "Hỗ trợ 1-1 từ mentor",
+//         "Tham gia cộng đồng học viên",
+//         "Chứng chỉ hoàn thành",
+//       ],
+//     },
+//     {
+//       price: "12.999.000đ",
+//       salePrice: "8.999.000đ",
+//       descript: [
+//         "Truy cập trọn đời",
+//         "70+ giờ video",
+//         "15 dự án thực tế",
+//         "Mentor 1-1 hàng tuần",
+//         "Review code chi tiết",
+//         "Chứng chỉ + Portfolio",
+//         "Hỗ trợ tìm việc",
+//       ],
+//     },
+//     {
+//       price: "19.999.000đ",
+//       salePrice: "14.999.000đ",
+//       descript: [
+//         "Truy cập trọn đời tất cả khóa",
+//         "100+ giờ video",
+//         "20+ dự án thực chiến",
+//         "Mentor chuyên gia 1-1",
+//         "Mock interview",
+//         "Đảm bảo việc làm",
+//         "Mạng lưới doanh nghiệp",
+//       ],
+//     },
+//     {
+//       price: "29.999.000đ",
+//       salePrice: "19.999.000đ",
+//       descript: [
+//         "Gói VIP - Truy cập trọn đời",
+//         "150+ giờ video premium",
+//         "30+ dự án thực tế lớn",
+//         "Mentor CTO/Tech Lead",
+//         "Thực tập có lương",
+//         "Đảm bảo việc làm lương cao",
+//         "Hỗ trợ suốt đời",
+//         "Networking events",
+//       ],
+//     },
+//   ]
+// }
 
 export function PricingSection() {
-  const pricingPlans = getMockPricingData()
+  const pricingPlans = getPricingData()
   const router = useRouter()
-  
-  const handleSelectPlan = (plan: PricingPlan) => {
-    const params = new URLSearchParams({
-      price: plan.price,
-      salePrice: plan.salePrice,
-      descript: plan.descript.join(","),
-    })
-    router.push(`/PricingCourse/Pricing?${params.toString()}`)
-  }
 
+  const handleSelectPlan = (plan: PricingPlan) => {
+    //     const params = new URLSearchParams({
+    //   price: plan.price,
+    //   salePrice: plan.salePrice,
+    //   descript: plan.descript.join(","),
+    // })
+    // router.push(`/PricingCourse/Pricing?${params.toString()}`)
+    router.push(`/PricingCourse/Pricing?id=${plan.id}`)
+  }
 
   return (
     <section className="py-24 px-4">
@@ -102,7 +103,7 @@ export function PricingSection() {
         <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {pricingPlans.map((plan, index) => (
             <div
-              key={index}
+              key={plan.id}
               // Sửa button cho nằm dưới đáy className="bg-card border-2 border-border hover:border-accent rounded-2xl p-6 relative transition-all hover:shadow-lg hover:scale-105"
               className="bg-card border-2 border-border hover:border-accent rounded-2xl p-6 relative flex flex-col transition-all hover:shadow-lg hover:scale-105"
             >
@@ -113,6 +114,7 @@ export function PricingSection() {
               )} */}
 
               <div className="text-center mb-6">
+                <h3 className="text-xl font-semibold mb-4">{plan.name}</h3>
                 <div className="text-3xl font-bold mb-2">{plan.salePrice}</div>
                 <div className="text-muted-foreground line-through text-sm">{plan.price}</div>
                 <div className="text-accent font-semibold mt-1 text-sm">

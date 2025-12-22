@@ -1,0 +1,2 @@
+Xóa file c:\FECourse\FeCourse\src\app\features\PricingCourse\Pricing\page.tsx.
+Giữ lại file c:\FECourse\FeCourse\src\app\PricingCourse\Pricing\page.tsx vì nó đã ở đúng vị

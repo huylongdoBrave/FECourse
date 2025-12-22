@@ -1,9 +1,9 @@
 import { Header } from "@/app/components/Headers"
-import { AdvertiseSection } from "@/app/features/Advertise/Advertise-sections"
+import { AdvertiseSection } from "@/app/components/Advertise/Advertise-sections"
 import { RecommendSection } from "@/app/features/Recommend/Recommend-sections"
-import { CurriculumSection } from "@/app/features/Curriculum/Curriculum-sections"
-import { PricingSection } from "@/app/features/PricingCourse/Pricing-sections"
-import { CTASection } from "@/app/features/CTA/CTA-sections"
+import { CurriculumSection } from "@/app/components/Curriculum/Curriculum-sections"
+import { PricingSection } from "@/app/components/PricingCourse/Pricing-sections"
+import { CTASection } from "@/app/components/CTA/CTA-sections"
 import { Footer } from "@/app/components/Footers"
 
 export default function Page() {
