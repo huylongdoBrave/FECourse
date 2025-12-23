@@ -6,11 +6,14 @@ import { PricingSection } from "@/app/components/PricingCourse/Pricing-sections"
 import { CTASection } from "@/app/components/CTA/CTA-sections"
 import { Footer } from "@/app/components/Footers"
 
+// import ParticleBackground from "@/app/components/EffectFeCourse/EffectFeCourse"
+
 export default function Page() {
   return (
     <div className="min-h-screen">
       <Header />
       <main>
+        {/* <ParticleBackground /> */}
         <AdvertiseSection />
         <RecommendSection />
         <CurriculumSection />

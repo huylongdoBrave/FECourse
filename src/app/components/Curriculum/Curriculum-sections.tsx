@@ -27,7 +27,7 @@ export function CurriculumSection() {
             <div
               key={module.id}
               onClick={() => handleSelectPlan(module)}
-              className="cursor-pointer bg-background border border-border rounded-lg p-6 hover:border-accent/50 transition-colors"
+              className="cursor-pointer bg-background border border-border rounded-lg p-6 hover:border-accent/80 transition-colors"
             >
               <div className="flex items-start justify-between mb-4">
                 <h3 className="text-xl font-semibold">{module.title}</h3>
