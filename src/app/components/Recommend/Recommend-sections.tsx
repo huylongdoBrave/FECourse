@@ -40,7 +40,7 @@ export function RecommendSection() {
           {features.map((feature, i) => (
             <div
               key={i}
-              className="bg-card border border-border rounded-lg p-6 hover:border-accent/50 transition-colors"
+              className="bg-card border-2 border-border rounded-lg p-6 hover:border-accent/80 transition-colors"
             >
               <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
                 <feature.icon className="w-6 h-6 text-accent" />
