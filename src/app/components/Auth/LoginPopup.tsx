@@ -1,89 +1,183 @@
 'use client';
 
-import { X } from "lucide-react"; 
-import { useEffect } from "react";
+import { X, Loader2 } from "lucide-react"; 
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSwitchToRegister?: () => void; // Thêm prop để chuyển sang đăng ký
 }
 
-export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
+// 2. Định nghĩa Schema Validation
+const validationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .required("Vui lòng nhập email")
+    .email("Email không hợp lệ"),
+  password: yup
+    .string()
+    .required("Vui lòng nhập mật khẩu"),
+});
 
+type LoginFormData = yup.InferType<typeof validationSchema>;
+
+export default function LoginPopup({ isOpen, onClose, onSwitchToRegister }: LoginModalProps) {
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const { 
+    register, 
+    handleSubmit, 
+    reset,
+    formState: { errors, isSubmitting } 
+  } = useForm<LoginFormData>({
+    resolver: yupResolver(validationSchema),
+    defaultValues: {
+      email: "",
+      password: ""
+    }
+  });
+
+
+  const onSubmit = async (data: LoginFormData) => {
+    setErrorMessage("");
+    try {
+      // Gọi API đăng nhập (API giả lập chúng ta đã tạo)
+      const res = await axios.post('/api/auth/login', data);
+
+      if (res.status === 200) {
+        // Lưu thông tin user vào localStorage để Header hiển thị
+        localStorage.setItem("user_info", JSON.stringify(res.data.user));
+        alert(`Xin chào, ${res.data.user.name}!`);
+        reset();
+        onClose();
+        
+        // Reload lại trang để Header cập nhật trạng thái đăng nhập
+        window.location.reload(); 
+      }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setErrorMessage(error.response.data.message); // VD: "Sai mật khẩu"
+      } else {
+        setErrorMessage("Có lỗi xảy ra, vui lòng thử lại.");
+      }
+    }
+  };
+
+
+  // Reset form khi mở popup
+  useEffect(() => {
+    if (isOpen) {
+        reset();
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setErrorMessage("");
+    }
+  }, [isOpen, reset]);
+
+
+  // Xử lý phím ESC
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") 
-        onClose();
+      if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
-
   if (!isOpen) return null;
 
   return (
-    <div
-    className=" fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       
+      {/* 1. LỚP NỀN (Backdrop) */}
       <div 
-        // className="bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden animate-in fade-in zoom-in duration-300"
-        className="bg-card border border-border rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden animate-in fade-in zoom-in duration-300"
-        onClick={(e) => e.stopPropagation()} // Chặn click xuyên thấu
-      >
-        <button 
-          onClick={onClose}
-        //   className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-accent/10 transition-colors"
-        >
-          {/* <X className="w-5 h-5 text-gray-500" /> */}
-          <X className="w-5 h-5 text-muted-foreground" />
-        </button>
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      ></div>
+      
+      {/* 2. NỘI DUNG POPUP */}
+      <div className="bg-card border border-border rounded-2xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden animate-in fade-in zoom-in duration-300">
+        
+        <div className="absolute top-4 right-4 z-20">
+            <button onClick={onClose} className="p-2 rounded-full hover:bg-accent/10 transition-colors">
+             <X className="w-5 h-5 text-muted-foreground" />
+            </button>
+        </div>
 
         <div className="p-8">
           <h2 className="text-2xl font-bold text-center mb-2">Xin chào.</h2>
-          {/* <p className="text-center text-gray-500 mb-6">Đăng nhập để tiếp tục học tập</p> */}
           <p className="text-center text-muted-foreground mb-6">Đăng nhập để tiếp tục học tập</p>
 
-          <form className="space-y-4">
+          {/* Hiển thị lỗi từ API */}
+          {errorMessage && (
+            <div className="bg-red-50 text-red-500 p-3 rounded-lg text-sm text-center mb-4 border border-red-200">
+                {errorMessage}
+            </div>
+          )}
+
+          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            
+            {/* Email */}
             <div>
-              {/* <label className="block text-sm font-medium text-gray-700 mb-1">Email</label> */}
               <label className="block text-sm font-medium mb-1">Email</label>
               <input 
+                {...register("email")}
                 type="email" 
                 placeholder="name@example.com"
-                // className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:border-transparent outline-none transition-all"
+                className={`w-full px-4 py-3 rounded-lg border bg-background outline-none transition-all
+                    ${errors.email ? 'border-red-500 focus:ring-red-500' : 'border-input focus:ring-2 focus:ring-ring'}`}
               />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
             
+            {/* Password */}
             <div>
-              {/* <label className="block text-sm font-medium text-gray-700 mb-1">Mật khẩu</label> */}
-              <label className="block text-sm font-medium mb-1">Mật khẩu</label>
+              <div className="flex justify-between items-center mb-1">
+                <label className="block text-sm font-medium">Mật khẩu</label>
+                <a href="#" className="text-xs text-accent hover:underline">Quên mật khẩu?</a>
+              </div>
               <input 
+                {...register("password")}
                 type="password" 
                 placeholder="••••••••"
-                // className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring focus:border-transparent outline-none transition-all"
+                className={`w-full px-4 py-3 rounded-lg border bg-background outline-none transition-all
+                    ${errors.password ? 'border-red-500 focus:ring-red-500' : 'border-input focus:ring-2 focus:ring-ring'}`}
               />
+              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
             </div>
-            {/* <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors"> */}
-            <button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold py-3 rounded-lg transition-colors">
-              Đăng nhập
+
+            {/* Submit Button */}
+            <button 
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" /> Đang đăng nhập...
+                  </>
+              ) : (
+                  "Đăng nhập"
+              )}
             </button>
           </form>
 
-          {/* <div className="mt-6 text-center text-sm text-gray-500">
-            Chưa có tài khoản? <span className="text-blue-600 font-semibold cursor-pointer hover:underline">Đăng ký ngay</span> */}
           <div className="mt-6 text-center text-sm text-muted-foreground">
-            Chưa có tài khoản? <span className="text-accent font-semibold cursor-pointer hover:underline">Đăng ký ngay</span>
+            Chưa có tài khoản?{" "}
+            <span 
+                onClick={onSwitchToRegister}
+                className="text-accent font-semibold cursor-pointer hover:underline"
+            >
+                Đăng ký ngay
+            </span>
           </div>
         </div>
       </div>
-
-      {/* Lớp click ra ngoài để tắt (đặt sau cùng nhưng z-index thấp hơn hộp popup) */}
-      {/* <div className="absolute inset-0" onClick={onClose}></div> */}
-
     </div>
-  );
+  ); 
 }

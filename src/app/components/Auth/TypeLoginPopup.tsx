@@ -3,6 +3,7 @@ import { signIn } from "next-auth/react";
 import { X, Mail, User } from "lucide-react"; 
 import { useEffect } from "react";
 
+// === UI TYPELOGIN POPUP ===
 interface TypeLoginModalProps {
   isOpen: boolean;
   onClose: () => void;

@@ -1,0 +1,23 @@
+[
+  {
+    "email": "admin@gmail.com",
+    "password": "123456a@",
+    "name": "Admin Vip",
+    "phone": "0909090909"
+  },
+  {
+    "email": "LongD@gmail.com",
+    "password": "123456a@",
+    "name": "Admin Long",
+    "phone": "0909090908"
+  },
+  {
+    "id": "4mnpuhevh",
+    "email": "longD@gmail.com",
+    "password": "$2b$10$4vBHwELgHDVekPuVSVinP.yxWaj0W220lCgs0phL9vVF5LdyXeq2W",
+    "name": "LongD",
+    "phone": "0912312312",
+    "birthday": "2011-02-10",
+    "createdAt": "2025-12-24T08:44:38.109Z"
+  }
+]
