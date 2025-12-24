@@ -5,6 +5,7 @@ import { ThemeProvider } from './components/Theme/theme-provider'
 import './globals.css'
 // import { DM_Sans as V0_Font_DM_Sans, Roboto_Mono as V0_Font_Roboto_Mono, Slabo_27px as V0_Font_Slabo_27px } from 'next/font/google'
 import { Be_Vietnam_Pro } from 'next/font/google'
+import { Providers } from '@/components/Provider'
 
 // Initialize fonts
 // const _dmSans = V0_Font_DM_Sans({ subsets: ['latin'], weight: ["100","200","300","400","500","600","700","800","900","1000"] })
@@ -33,18 +34,22 @@ export default function RootLayout({
     return (
       <html lang="en" suppressHydrationWarning>
         <body className={`${fontMain.variable} font-sans antialiased`}>
-          <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-          value={{
-            light: "light",
-            dark: "dark",
-          }}
-          >
-            {children}
-          </ThemeProvider>
+
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+              value={{
+                light: "light",
+                dark: "dark",
+              }}
+              >          
+              <Providers>
+                {children}
+              </Providers>
+            </ThemeProvider>
+
         </body>
       </html>
     )

@@ -1,21 +1,34 @@
 "use client"
-import { Code2, Menu, X } from "lucide-react"
+import { Code2, Menu, X, User, LogOut} from "lucide-react"
 import Link from "next/link"
 import { ThemeToggle } from "../components/Theme/theme-toggle"
-import { use, useState } from "react"
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react"
+import { useSession, signOut } from "next-auth/react"; 
 import TypeLoginPopup from "./Auth/TypeLoginPopup"
 import LoginPopup from '../components/Auth/LoginPopup';
 import RegisterPopup from "./Auth/RegisterPopup";
-import { motion, AnimatePresence } from "framer-motion";
+
 
 export function Header() {
+  // Lấy dữ liệu session
+  // data: chứa thông tin user (name, email, image)
+  // status: trạng thái ('authenticated', 'loading', 'unauthenticated')
+  const { data: session, status } = useSession();
 
   const [isTypeLoginOpen, setisTypeLoginOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // 2. Cấu hình hiệu ứng (Variants)
+  // Lưu Local
+  useEffect(() => {
+    if (session?.user) {
+        localStorage.setItem("user_info", JSON.stringify(session.user));
+    }
+  }, [session]);
+
+  // Cấu hình hiệu ứng (Variants)
   const menuVariants = {
     closed: {
       opacity: 0,
@@ -65,17 +78,52 @@ export function Header() {
 
             {/* Actions (Login/Register/Toggle) */}
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => setisTypeLoginOpen(true)}
-                className="hidden md:inline-flex items-center justify-center px-4 py-2 rounded-lg hover:bg-accent/10 transition-colors">
-                Đăng nhập
-              </button>
-              <button
-                onClick={() => setIsRegisterOpen(true)}
-                className="inline-flex items-center justify-center px-3 py-1.5 text-sm lg:px-4 lg:py-2 lg:text-base rounded-lg bg-accent hover:bg-accent/90 text-black font-semibold transition-colors">
-                Đăng ký ngay
-              </button>
-              
+
+              {/* KIỂM TRA: Nếu đã đăng nhập (session tồn tại) */}
+              {status === "authenticated" && session.user ? ( 
+                <div className="flex items-center gap-3">
+                    {/* Hiển thị Avatar (nếu có) hoặc Icon User */}
+                    {session.user.image ? (
+                        <img 
+                            src={session.user.image} 
+                            alt="Avatar" 
+                            className="w-8 h-8 rounded-full border border-gray-300"
+                        />
+                    ) : (
+                        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                            <User className="w-4 h-4 text-gray-600"/>
+                        </div>
+                    )}
+                    
+                    {/* Hiển thị Tên */}
+                    <span className="text-sm font-semibold hidden md:block">
+                        {session.user.name}
+                    </span>
+
+                    {/* Nút Đăng xuất */}
+                    <button 
+                        onClick={() => signOut()} // Hàm đăng xuất của NextAuth
+                        className="p-2 hover:text-green-600 text-white-500 rounded-full transition-colors"
+                        title="Đăng xuất"
+                    >
+                        <LogOut className="w-5 h-5" />
+                    </button>
+                </div>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setisTypeLoginOpen(true)}
+                    className="hidden md:inline-flex items-center justify-center px-4 py-2 rounded-lg hover:bg-accent/10 transition-colors">
+                    Đăng nhập
+                  </button>
+                  <button
+                    onClick={() => setIsRegisterOpen(true)}
+                    className="inline-flex items-center justify-center px-3 py-1.5 text-sm lg:px-4 lg:py-2 lg:text-base rounded-lg bg-accent hover:bg-accent/90 text-black font-semibold transition-colors">
+                    Đăng ký ngay
+                  </button>
+                </>
+              )}
+
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -91,7 +139,7 @@ export function Header() {
             </div>
           </div>
 
-          {/* 3. Mobile Menu với Framer Motion */}
+          {/* Mobile Menu với Framer Motion */}
           <AnimatePresence>
             {isMobileMenuOpen && (
               <motion.div
@@ -197,6 +245,8 @@ export function Header() {
             setIsLoginOpen(true);
         }}
       />
+
+
     </>
   )
 }

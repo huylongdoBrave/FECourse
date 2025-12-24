@@ -1,5 +1,5 @@
 'use client';
-
+import { signIn } from "next-auth/react";
 import { X, Mail, User } from "lucide-react"; 
 import { useEffect } from "react";
 
@@ -20,6 +20,11 @@ export default function TypeLoginPopup({ isOpen, onClose, onSwitchToLoginForm, o
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
+
+  const handleGoogleLogin = () => {
+    // Gọi hàm signIn, tham số 'google' khớp với provider đã cấu hình ở Bước 4
+    signIn('google', { callbackUrl: '/' }); // Đăng nhập xong quay về trang chủ
+  };
 
   if (!isOpen) return null;
 
@@ -53,7 +58,7 @@ export default function TypeLoginPopup({ isOpen, onClose, onSwitchToLoginForm, o
             
             {/* Nút 1: Đăng nhập bằng Google */}
             <button 
-                onClick={onLoginGoogle}
+                onClick={handleGoogleLogin}
                 className="w-full bg-white text-gray-800 border border-gray-300 hover:bg-gray-50 font-semibold py-3.5 rounded-xl transition-colors flex items-center justify-center gap-3 shadow-sm"
             >
                 {/* Icon Google SVG chuẩn */}
