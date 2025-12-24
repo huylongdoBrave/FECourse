@@ -40,18 +40,18 @@ export async function POST(request: Request) {
       );
     }
     
-    let currentUsers = [];
-    // IF: Kiểm tra xem file users.json đã có chưa?
-    if (fs.existsSync(filePath)) {
-      // Nếu có rồi thì đọc ra
-      const fileData = fs.readFileSync(filePath, "utf8");
-      currentUsers = JSON.parse(fileData);
-    } else {
-      // IF: Nếu chưa có (ví dụ lần đầu chạy), tạo thư mục data nếu cần
-      if (!fs.existsSync(path.join(process.cwd(), "data"))) {
-        fs.mkdirSync(path.join(process.cwd(), "data"));
-      }
-    }
+    // let currentUsers = [];
+    // // IF: Kiểm tra xem file users.json đã có chưa?
+    // if (fs.existsSync(filePath)) {
+    //   // Nếu có rồi thì đọc ra
+    //   const fileData = fs.readFileSync(filePath, "utf8");
+    //   currentUsers = JSON.parse(fileData);
+    // } else {
+    //   // IF: Nếu chưa có (ví dụ lần đầu chạy), tạo thư mục data nếu cần
+    //   if (!fs.existsSync(path.join(process.cwd(), "data"))) {
+    //     fs.mkdirSync(path.join(process.cwd(), "data"));
+    //   }
+    // }
 
     // Kiểm tra mật khẩu nhập lại 
     if (confirmPassword && password !== confirmPassword) {
