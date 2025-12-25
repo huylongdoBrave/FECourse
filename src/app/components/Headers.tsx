@@ -105,7 +105,20 @@ export function Header() {
             {/* Actions (Login/Register/Toggle) */}
             <div className="flex items-center gap-4">
 
-              {/* 6. SỬA ĐOẠN KIỂM TRA ĐĂNG NHẬP TẠI ĐÂY */}
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden relative inline-flex items-center justify-center w-10 h-10 rounded-lg hover:bg-accent/10 transition-colors"
+              >
+                <Menu className={`w-5 h-5 transition-all duration-300 ${isMobileMenuOpen ? 'scale-0 rotate-90 opacity-0' : 'scale-100 rotate-0 opacity-100'}`} />
+                <X className={`w-5 h-5 absolute transition-all duration-300 ${isMobileMenuOpen ? 'scale-100 rotate-0 opacity-100' : 'scale-0 -rotate-90 opacity-0'}`} />
+              </button>
+              
+              <div className="relative">
+                <ThemeToggle />
+              </div>
+
+              {/* SỬA ĐOẠN KIỂM TRA ĐĂNG NHẬP TẠI ĐÂY */}
               {isAuthenticated && currentUser ? ( 
                 <div className="flex items-center gap-3">
                     
@@ -153,19 +166,6 @@ export function Header() {
                   </button>
                 </>
               )}
-
-              {/* Mobile Menu Button */}
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden relative inline-flex items-center justify-center w-10 h-10 rounded-lg hover:bg-accent/10 transition-colors"
-              >
-                <Menu className={`w-5 h-5 transition-all duration-300 ${isMobileMenuOpen ? 'scale-0 rotate-90 opacity-0' : 'scale-100 rotate-0 opacity-100'}`} />
-                <X className={`w-5 h-5 absolute transition-all duration-300 ${isMobileMenuOpen ? 'scale-100 rotate-0 opacity-100' : 'scale-0 -rotate-90 opacity-0'}`} />
-              </button>
-              
-              <div className="relative">
-                <ThemeToggle />
-              </div>
             </div>
           </div>
 

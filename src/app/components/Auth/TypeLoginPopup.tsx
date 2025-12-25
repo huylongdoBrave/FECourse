@@ -94,9 +94,9 @@ export default function TypeLoginPopup({ isOpen, onClose, onSwitchToLoginForm, o
             {/* Nút 2: Đăng nhập bằng Form (Tài khoản) */}
             <button 
                 onClick={onSwitchToLoginForm}
-                className="w-full bg-accent/10 hover:bg-accent/20 text-accent-foreground border border-accent/20 font-semibold py-3.5 rounded-xl transition-colors flex items-center justify-center gap-3"
+                 className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold py-3 rounded-lg transition-colors mt-2 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-                <Mail className="w-5 h-5" />
+                <Mail className="w-5 h-5 " />
                 Đăng nhập bằng Email
             </button>
 
