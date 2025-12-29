@@ -105,7 +105,7 @@ export function AdvertiseSection() {
         </div>
 
         <h1 className="text-5xl md:text-7xl font-bold mb-6 text-balance">
-          Chương trình đào tạo lập trình viên Front end
+          Chương trình đào tạo lập trình viên Front ends
           <br />
           <span className="text-accent">chuyên nghiệp</span>
         </h1>
