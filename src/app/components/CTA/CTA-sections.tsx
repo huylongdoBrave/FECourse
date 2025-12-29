@@ -8,7 +8,7 @@ export function CTASection() {
     e.preventDefault(); // Ngăn chặn việc đổi URL thành /#advertise
     
     // Tìm phần tử có id="advertise"
-    const element = document.getElementById("advertise");
+    const element = document.getElementById("advertise-sec");
     
     if (element) {
       element.scrollIntoView({ 
