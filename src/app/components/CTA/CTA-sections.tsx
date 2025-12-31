@@ -24,7 +24,7 @@ export function CTASection() {
           Sẵn sàng bắt đầu hành trình trở thành Frontend Developer?
         </h2>
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Đăng ký ngay hôm nay và nhận ưu đãi đặc biệt dành cho 50 học viên đầu tiên
+          Đăng ký ngay hôm nay và nhận ưu đãi đặc biệt dành cho 50 học viên đầu tiêns
         </p>
         <button 
           onClick={scrollToIntro}
